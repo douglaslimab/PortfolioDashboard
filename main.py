@@ -19,6 +19,9 @@ companies = {
 
 portfolio = {}
 
+user_portfolio = {"ticker": [], "amount": [], "current_value": [], "initial_price": [], "initial_date": []}
+
+
 for companie, amount in companies.items():
     shares_price = web.DataReader(f'{companie}.SA', data_source='yahoo', start='01/13/2022', end='01/13/2022')
 #    display(shares_price)
@@ -27,12 +30,16 @@ for companie, amount in companies.items():
     portfolio[companie] = current_price
 #    shares_price['Adj Close'].plot(figsize=(12, 6), title=companie)
 #    plt.show()
+    user_portfolio["ticker"].append(companie)
+    user_portfolio["amount"].append(amount)
+    user_portfolio["current_value"].append(current_price)
 
 portfolio_out = OrderedDict(sorted(portfolio.items(), key=lambda t: t[1]))
 
 for companie, price in portfolio_out.items():
     print("{}:  R$ {:.2f}".format(companie, price))
 
+print(user_portfolio)
 print(portfolio_out)
 plt.title('Shares Portfolio')
 plt.pie(portfolio_out.values(), labels=portfolio_out.keys(), startangle=90)
