@@ -41,10 +41,15 @@ def get_geo(country):
     return dct
 
 
-@app.route('/<country>')
-def home(country):
-    response = get_geo(country)
-    return response
+@app.route('/<country>/sumary')
+def sumary(country):
+    response_sum = get_sumary(country)
+    return response_sum
+
+@app.route('/<country>/geo')
+def geo(country):
+    response_geo = get_geo(country)
+    return response_geo
 
 
 #get_table(country)
