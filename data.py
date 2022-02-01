@@ -5,8 +5,6 @@ app = Flask(__name__)
 
 df = pd.read_csv("/Users/dougl/OneDrive/Documents/PortfolioDashboard/covidData.csv")
 
-#country = 'Brazil'
-
 
 def get_table(country):
     df_output = df.loc[df['Country_Region'] == country][['Province_State', 'Country_Region', 'Confirmed', 'Lat', 'Long_']]
@@ -15,7 +13,7 @@ def get_table(country):
 
     print("data stored...")
 
-def get_sumary(country):
+def get_summary(country):
     df_country = df.groupby(['Country_Region']).sum()
     df_country = df_country[['Confirmed', 'Deaths', 'Recovered', 'Active']]
 
@@ -41,19 +39,17 @@ def get_geo(country):
     return dct
 
 
-@app.route('/<country>/sumary')
+@app.route('/<country>/summary')
 def sumary(country):
-    response_sum = get_sumary(country)
-    return response_sum
+    response = get_summary(country)
+    response.update(get_geo(country))
+    return response
 
 @app.route('/<country>/geo')
 def geo(country):
     response_geo = get_geo(country)
     return response_geo
 
-
-#get_table(country)
-#print(get_sumary(country))
 
 if __name__ == "__main__":
     app.run(debug=True)
